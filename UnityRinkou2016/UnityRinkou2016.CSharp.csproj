@@ -58,23 +58,20 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Completed\Scripts\BrokenBlockController.cs" />
     <Compile Include="Assets\Completed\Scripts\CompleteCameraController.cs" />
-    <Compile Include="Assets\Completed\Scripts\CompletePlayerController.cs" />
     <Compile Include="Assets\Completed\Scripts\CompleteRotator.cs" />
     <Compile Include="Assets\Completed\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Completed\Scripts\Goal.cs" />
     <Compile Include="Assets\Completed\Scripts\Linear.cs" />
-    <Compile Include="Assets\Completed\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Completed\Scripts\LiveStage.cs" />
+    <Compile Include="Assets\Completed\Scripts\Player.cs" />
+    <Compile Include="Assets\Completed\Scripts\SpringController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
