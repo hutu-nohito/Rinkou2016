@@ -26,7 +26,7 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-
+        transform.Rotate(0,0,10);
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
