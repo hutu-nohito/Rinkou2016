@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 //Adding this allows us to access members of the UI namespace including Text.
 using UnityEngine.UI;
@@ -174,25 +175,41 @@ public class GameManager : MonoBehaviour {
     //スタート時の処理
     void StartState()
     {
-        Utility.SetText(Utility.TextName.lose, "スペースキーを押してね！");
-        if (Input.GetKeyDown(KeyCode.Space))
+        Utility.SetText(Utility.TextName.lose, "タップでスタート！");
+        if (Input.GetMouseButtonDown(0))
         {
             Variable.playstate = Utility.PlayState.isPaly;
             Time.timeScale = 1;//動かす
             Utility.SetText(Utility.TextName.lose, "");
         }
+        //Utility.SetText(Utility.TextName.lose, "スペースキーを押してね！");
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Variable.playstate = Utility.PlayState.isPaly;
+        //    Time.timeScale = 1;//動かす
+        //    Utility.SetText(Utility.TextName.lose, "");
+        //}
     }
 
     //クリア時の処理
     void ClearState()
     {
         Utility.SetText(Utility.TextName.win, "You Win!");
+        Invoke("Reset",3.5f);
     }
 
     //失敗時の処理
     void FailedState()
     {
         Utility.SetText(Utility.TextName.lose, "You lose");
+        Invoke("Reset", 3.5f);
+    }
+
+    //戻す
+    void Reset()
+    {
+        SceneManager.LoadScene("Title");
+        Variable.playstate = Utility.PlayState.Start;
     }
 
 }

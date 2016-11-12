@@ -22,6 +22,9 @@ public class Player : MonoBehaviour {
         //Scene内のスクリプト、GameManagerを取得
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        //Androidで傾きを使う
+        Input.gyro.enabled = true;
+
     }
 
     void Update()
@@ -38,13 +41,19 @@ public class Player : MonoBehaviour {
         //Store the current vertical input in the float moveVertical.
         float moveVertical = Input.GetAxis("Vertical");
 
+        // ジャイロから重力の下向きのベクトルを取得。水平に置いた場合は、gravityV.zが-9.8になる.
+        Vector3 gravityV = Input.gyro.gravity;
+        // 外力のベクトルを計算.
+        Vector2 forceV = new Vector2(gravityV.x, gravityV.y) * speed;
+
         //Use the two store floats to create a new Vector2 variable movement.
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
 
         if(Variable.playstate == Utility.PlayState.isPaly){
 
             //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
-            rb2d.AddForce(movement * speed);
+            rb2d.AddForce(movement * speed);//インプットがなければこっちは0
+            rb2d.AddForce(forceV * speed);
 
         }
 
