@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BrokenBlockController : MonoBehaviour {
 
-    public int maxHP = 5;
+    public int maxHP = 5;//壊れるまでの回数
     private int carrentHP;
     private bool isbroken = false;
 

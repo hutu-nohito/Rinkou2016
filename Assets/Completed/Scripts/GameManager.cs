@@ -13,7 +13,7 @@ public static class Variable
     public static Utility.PlayState playstate = Utility.PlayState.Start;
 }
 
-//よく使う関数
+//全体で使うもの
 public class Utility
 {
     //ゲームの状態
@@ -97,7 +97,6 @@ public class GameManager : MonoBehaviour {
     /// タイム管理
     /// 入力管理
 
-    public int clearCountNum = 12;//クリアになる宝石の数
     public float limitTime = 5;//タイムリミット
 
     //テキストオブジェクト

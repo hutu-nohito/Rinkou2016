@@ -20,7 +20,7 @@ public class LiveStage : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other)
     {
-        //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
+        //範囲外に出てる
         if (other.gameObject.CompareTag("Player"))
         {
             Variable.playstate = Utility.PlayState.Failed;
@@ -29,7 +29,7 @@ public class LiveStage : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
+        //範囲から外れたら外に放り出す
         if (other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<Rigidbody2D>().AddForce(player.moveDirection.normalized * 20,ForceMode2D.Impulse);
