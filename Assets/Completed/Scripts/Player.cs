@@ -5,6 +5,19 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
+    /******************************************************************************/
+    /** @brief 自機の操作
+    * @date 2016/11/14
+    * @author 石川
+    * @param[in] m_fringe 干渉縞の計算結果を格納
+    * @param[in]
+    */
+    /******************************************************************************/
+    /* 更新履歴
+    *   キー入力はデバッグ用
+    */
+    /******************************************************************************/
+
     public float speed;             //Floating point variable to store the player's movement speed.
     public Vector2 moveDirection = new Vector2(0,0);
     private Vector2 oldposition = new Vector2(0, 0);
@@ -29,6 +42,7 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
+        //回してるとＵＦＯっぽい
         transform.Rotate(0,0,10);
     }
 
@@ -75,7 +89,7 @@ public class Player : MonoBehaviour {
             Variable.count = Variable.count + 1;
 
             //Update the currently displayed count by calling the SetCountText function.
-            Utility.SetText(Utility.TextName.count, "宝石　" + Variable.count.ToString());
+            TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
             //gamemanager.SetCountText();
         }
 
