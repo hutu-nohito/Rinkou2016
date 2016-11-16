@@ -53,7 +53,11 @@ public class GameManager : MonoBehaviour {
     public Text timeText;
     public Text winText;            //Store a reference to the UI Text component which will display the 'You win' message.
     public Text loseText;
-    public Text gameoverText;    
+    public Text gameoverText;
+    //背景を暗くして文字を見やすくするためのもの
+    public GameObject TextBackGround;
+    //戻る用のボタン(あとで何とかする)
+    public GameObject LeftButton, RightButton;
 
     // Use this for initialization
     void Start () {
@@ -123,9 +127,11 @@ public class GameManager : MonoBehaviour {
     //スタート時の処理
     void StartState()
     {
+        TextBackGround.SetActive(true);
         TextUtility.SetText(TextUtility.TextName.lose, "タップでスタート！");
         if (Input.GetMouseButtonDown(0))
         {
+            TextBackGround.SetActive(false);
             Variable.playstate = Utility.PlayState.isPaly;
             Time.timeScale = 1;//動かす
             TextUtility.SetText(TextUtility.TextName.lose, "");
@@ -142,21 +148,38 @@ public class GameManager : MonoBehaviour {
     //クリア時の処理
     void ClearState()
     {
-        TextUtility.SetText(TextUtility.TextName.win, "You Win!");
-        Invoke("Reset",3.5f);
+        //Invoke("Reset",3.5f);
+
+        //リザルト表示
+        TextBackGround.SetActive(true);
+        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count + Variable.time);
+        TextUtility.SetText(TextUtility.TextName.win, result_text);
+
+        //ボタン表示
+        RightButton.SetActive(true);
+        LeftButton.SetActive(true);
+
     }
 
     //失敗時の処理
     void FailedState()
     {
+        TextBackGround.SetActive(true);
         TextUtility.SetText(TextUtility.TextName.lose, "You lose");
         Invoke("Reset", 3.5f);
     }
 
     //戻す
-    void Reset()
+    public void Reset()
     {
         SceneManager.LoadScene("Title");
+        Variable.playstate = Utility.PlayState.Start;
+    }
+
+    //リトライ
+    public void Retry()
+    {
+        SceneManager.LoadScene("Main");
         Variable.playstate = Utility.PlayState.Start;
     }
 

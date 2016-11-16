@@ -17,6 +17,6 @@ public class Title : MonoBehaviour {
 
     public void Button_Start()
     {
-        SceneManager.LoadScene("Main (Completed)");
+        SceneManager.LoadScene("Main");
     }
 }
