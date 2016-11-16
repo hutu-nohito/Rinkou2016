@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: dea0e117796e3f2478789ab97d6515c9
-timeCreated: 1479102645
+guid: d55ba45a4be6c144981d46eb0ec48711
+timeCreated: 1479297442
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 4
@@ -10,7 +10,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Stencil_Paipu_DB
+  - 851Letrogo
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
