@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        GameObject.FindGameObjectWithTag("Player").transform.position = PlayerPara.start_position;
+
         //テキストオブジェクトをセットする
         TextUtility.SetTextObject(countText, timeText, winText, loseText, gameoverText);
 
@@ -148,7 +150,8 @@ public class GameManager : MonoBehaviour {
     //クリア時の処理
     void ClearState()
     {
-        //Invoke("Reset",3.5f);
+        //プレイヤーを止める
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 
         //リザルト表示
         TextBackGround.SetActive(true);
@@ -164,15 +167,21 @@ public class GameManager : MonoBehaviour {
     //失敗時の処理
     void FailedState()
     {
+        //プレイヤーを止める
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         TextBackGround.SetActive(true);
-        TextUtility.SetText(TextUtility.TextName.lose, "You lose");
-        Invoke("Reset", 3.5f);
+        TextUtility.SetText(TextUtility.TextName.lose, "しっぱい・・・");
+
+        //ボタン表示
+        RightButton.SetActive(true);
+        LeftButton.SetActive(true);
+
     }
 
     //戻す
     public void Reset()
     {
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("Home");
         Variable.playstate = Utility.PlayState.Start;
     }
 

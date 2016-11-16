@@ -18,6 +18,7 @@ using System.Collections;
 public static class PlayerPara
 {
     public static float player_speed = 10;
+    public static Vector2 start_position = new Vector2(0,0);
 }
 
 //設定用変数
@@ -26,12 +27,29 @@ public static class ConfigPara
     public static int BGM_vol = 1;
 }
 
-public class SaveLoad : MonoBehaviour {   
+public class SaveLoad : MonoBehaviour {
 
+    private static bool flag_exist = false;
+    void Awake()
+    {
+
+        if (!flag_exist)
+        {
+
+            DontDestroyOnLoad(this.gameObject);
+            flag_exist = true;
+
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+    }
     // Use this for initialization
     void Start () {
-	
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
