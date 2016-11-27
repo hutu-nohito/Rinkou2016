@@ -3,20 +3,27 @@ using System.Collections;
 
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour {
+/******************************************************************************/
+/** @brief 自機の操作
+* @date 2016/11/14
+* @author 石川
+* @param[in] m_fringe 干渉縞の計算結果を格納
+* @param[in]
+*/
+/******************************************************************************/
+/* 更新履歴
+*   キー入力はデバッグ用
+*/
+/******************************************************************************/
 
-    /******************************************************************************/
-    /** @brief 自機の操作
-    * @date 2016/11/14
-    * @author 石川
-    * @param[in] m_fringe 干渉縞の計算結果を格納
-    * @param[in]
-    */
-    /******************************************************************************/
-    /* 更新履歴
-    *   キー入力はデバッグ用
-    */
-    /******************************************************************************/
+//プレイヤーがよく使う変数
+public static class PlayerPara
+{
+    public static float player_speed = 10;
+    public static Vector2 start_position = new Vector2(0, 300);
+}
+
+public class Player : MonoBehaviour {
 
     public float speed;             //Floating point variable to store the player's movement speed.
     public Vector2 moveDirection = new Vector2(0,0);
@@ -66,7 +73,7 @@ public class Player : MonoBehaviour {
         if(Variable.playstate == Utility.PlayState.isPaly){
 
             //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
-            rb2d.AddForce(movement * speed);//インプットがなければこっちは0
+            rb2d.AddForce(movement * 5 * speed);//インプットがなければこっちは0
             rb2d.AddForce(forceV * speed);
 
         }

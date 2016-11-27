@@ -14,13 +14,6 @@ using System.Collections;
 */
 /******************************************************************************/
 
-//プレイヤーがよく使う変数
-public static class PlayerPara
-{
-    public static float player_speed = 10;
-    public static Vector2 start_position = new Vector2(0,0);
-}
-
 //設定用変数
 public static class ConfigPara
 {
