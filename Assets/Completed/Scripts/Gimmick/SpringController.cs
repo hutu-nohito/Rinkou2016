@@ -13,7 +13,7 @@ public class SpringController : MonoBehaviour {
             Vector2 ForceDirection = (other.gameObject.transform.position - transform.position);//ばねからプレイヤー方向
             Vector2 PlayerVelocity = other.gameObject.GetComponent<Rigidbody2D>().velocity;
 
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce(ForceDirection * power, ForceMode2D.Impulse);
+            other.gameObject.GetComponent<Rigidbody2D>().AddForce(ForceDirection * power * other.gameObject.GetComponent<Rigidbody2D>().mass, ForceMode2D.Impulse);
 
             //入射したとき速度が大きいほうはそのまま
             //if (PlayerVelocity.x > PlayerVelocity.y)//横に入射したとき

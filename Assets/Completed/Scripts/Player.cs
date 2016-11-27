@@ -19,19 +19,23 @@ using UnityEngine.UI;
 //プレイヤーがよく使う変数
 public static class PlayerPara
 {
-    public static float player_speed = 10;
-    public static Vector2 start_position = new Vector2(0, 300);
+    public static float player_speed = 5;
+    public static float limmit_speed = 10;
+    public static Vector2 start_position = new Vector2(0, 0);
 }
 
 public class Player : MonoBehaviour {
 
-    public float speed;             //Floating point variable to store the player's movement speed.
+    private float speed;             //Floating point variable to store the player's movement speed.
+    private float limmit_speed;
     public Vector2 moveDirection = new Vector2(0,0);
     private Vector2 oldposition = new Vector2(0, 0);
 
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
 
     private GameManager gamemanager;//Gamemanagerを参照する
+
+    public GameObject PowewEffect;
     
     // Use this for initialization
     void Start()
@@ -42,6 +46,9 @@ public class Player : MonoBehaviour {
         //Scene内のスクリプト、GameManagerを取得
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        speed = PlayerPara.player_speed;
+        limmit_speed = PlayerPara.limmit_speed;
+
         //Androidで傾きを使う
         Input.gyro.enabled = true;
 
@@ -51,6 +58,12 @@ public class Player : MonoBehaviour {
     {
         //回してるとＵＦＯっぽい
         transform.Rotate(0,0,10);
+
+        //速度制限
+        if(rb2d.velocity.magnitude > limmit_speed)
+        {
+            rb2d.AddForce(-rb2d.velocity * 0.7f);
+        }
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -98,6 +111,18 @@ public class Player : MonoBehaviour {
             //Update the currently displayed count by calling the SetCountText function.
             TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
             //gamemanager.SetCountText();
+        }
+
+        if (other.gameObject.CompareTag("PowerUP"))
+        {
+            //... then set the other object we just collided with to inactive.
+            other.gameObject.SetActive(false);
+
+            //パワーアップ処理
+            rb2d.mass *= 1000000;
+            speed *= 1000000;
+            limmit_speed *= 1;
+            PowewEffect.SetActive(true);
         }
 
 

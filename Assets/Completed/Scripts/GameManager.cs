@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
     /// 入力管理
 
     public float limitTime = 5;//タイムリミット
+    public int jewel_rate = 10;//宝石のスコア
 
     //テキストオブジェクト
     public Text countText;          //Store a reference to the UI Text component which will display the number of pickups collected.
@@ -155,7 +156,7 @@ public class GameManager : MonoBehaviour {
 
         //リザルト表示
         TextBackGround.SetActive(true);
-        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count + Variable.time);
+        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time);
         TextUtility.SetText(TextUtility.TextName.win, result_text);
 
         //ボタン表示

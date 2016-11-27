@@ -25,4 +25,10 @@ public class Home : MonoBehaviour {
         PlayerPara.start_position = new Vector2(0, 100);
         SceneManager.LoadScene("Main");
     }
+
+    public void Stage3()
+    {
+        PlayerPara.start_position = new Vector2(5, 300);
+        SceneManager.LoadScene("Main");
+    }
 }
