@@ -25,7 +25,7 @@ public static class PlayerPara
     public static float player_power = 1;//攻撃力
     public static float player_friction = 2;//摩擦
     public static float player_dash = 7;//プッシュ加速力
-    public static Vector2 start_position = new Vector2(0, 300);
+    public static Vector2 start_position = new Vector2(0, 0);
 }
 
 public class Player : Machine_Parameter {

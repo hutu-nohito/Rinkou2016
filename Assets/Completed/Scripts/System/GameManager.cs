@@ -117,9 +117,11 @@ public class GameManager : MonoBehaviour {
                 if (Utility.isCity)
                 {
                     //ここでランダムでコロシアムを選ぶ
+                    PlayerPara.start_position = new Vector2(500, 100);//ステージ2
+
+
                     //コロシアムを管理するとこに送って場所を指定
                     CommonValue.limit_time = 300;
-                    PlayerPara.start_position = new Vector2(0,0);
                     Utility.isCity = false;
 
                     //パラメタ受け渡し(あとで何とか)
@@ -131,13 +133,14 @@ public class GameManager : MonoBehaviour {
                     MP.power = P.power;
                     MP.friction = P.friction;
 
+                    Variable.time = 100;//失敗を表示させないため(あんまよくない)
                     ST.SceneSet("Main");
                 }
                 else
                 {
                     Variable.playstate = Utility.PlayState.Failed;
                 }
-                
+
             }
 
             TextUtility.SetText(TextUtility.TextName.time, ("残り時間　" + ((int)Variable.time).ToString()));//小数点以下を切り上げて表示
@@ -223,6 +226,9 @@ public class GameManager : MonoBehaviour {
         MP.mass = 1;
         MP.power = 1;
         MP.friction = 2;
+        CommonValue.limit_time = 30;
+        Utility.isCity = true;
+
         ST.SceneSet("Home");
     }
 
