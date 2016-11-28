@@ -7,6 +7,8 @@ public class SceneTransition : MonoBehaviour
     [SerializeField]
     private FadeImage Fade_Image;
 
+    Sound_Controller SC;
+
     private string SceneName = "Home";
     private bool isCoroutine;
     
@@ -35,7 +37,7 @@ public class SceneTransition : MonoBehaviour
     
     void Start()
     {
-
+        SC = GetComponent<Sound_Controller>();
     }
 
     void Update()
@@ -105,6 +107,8 @@ public class SceneTransition : MonoBehaviour
         yield return new WaitForSeconds(fade_time + 1);
 
         Asy.allowSceneActivation = true;
+
+        SC.BGM(SceneName);//BGMを変える
 
         Fade(false);
 

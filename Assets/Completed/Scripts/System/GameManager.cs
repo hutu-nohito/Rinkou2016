@@ -64,12 +64,14 @@ public class GameManager : MonoBehaviour {
     private GameObject Player;
     private GameObject Save;
     private SceneTransition ST;
-    
+    Sound_Controller SC;
+
     // Use this for initialization
     void Start () {
 
         Save = GameObject.FindGameObjectWithTag("Save");
         ST = Save.GetComponent<SceneTransition>();
+        SC = GameObject.FindGameObjectWithTag("Save").GetComponent<Sound_Controller>();
         Player = GameObject.FindGameObjectWithTag("Player");
         Player.transform.position = PlayerPara.start_position;
 
@@ -229,12 +231,14 @@ public class GameManager : MonoBehaviour {
         CommonValue.limit_time = 30;
         Utility.isCity = true;
 
+        SC.ButtonSE();
         ST.SceneSet("Home");
     }
 
     //リトライ
     public void Retry()
     {
+        SC.ButtonSE();
         ST.SceneSet("Main");
     }
 

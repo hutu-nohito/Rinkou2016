@@ -42,6 +42,7 @@ public class Player : Machine_Parameter {
     private bool isDash = false;
 
     private GameObject Save;
+    private Sound_Controller SC;
         
     // Use this for initialization
     void Start()
@@ -52,6 +53,7 @@ public class Player : Machine_Parameter {
         //Scene内のスクリプト、GameManagerを取得
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Save = GameObject.FindGameObjectWithTag("Save");
+        SC = Save.GetComponent<Sound_Controller>();
 
         //マシン性能の設定
         Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
@@ -143,10 +145,12 @@ public class Player : Machine_Parameter {
             //Update the currently displayed count by calling the SetCountText function.
             TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
             //gamemanager.SetCountText();
+            return;
         }
 
         if (other.gameObject.CompareTag("PowerUP"))
         {
+            SC.PowerUpSE();
             //パワーアップ処理
             acceleration += 5 * other.gameObject.GetComponent<Machine_Parameter>().acceleration;
             limmit_speed += 1 * other.gameObject.GetComponent<Machine_Parameter>().limmit_speed;
@@ -156,9 +160,14 @@ public class Player : Machine_Parameter {
             dash += (other.gameObject.GetComponent<Machine_Parameter>().acceleration + other.gameObject.GetComponent<Machine_Parameter>().limmit_speed) / 2;
 
             Destroy(other.gameObject);
+            return;
         }
 
+    }
 
+    void OnCollisionEnter2D()
+    {
+        SC.KabeSE();
     }
 
 }
