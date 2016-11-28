@@ -16,18 +16,19 @@ using UnityEngine.UI;
 */
 /******************************************************************************/
 
-//プレイヤーがよく使う変数
+//マシン性能(選択できるようになったら使う)
 public static class PlayerPara
 {
-    public static float player_speed = 5;
-    public static float limmit_speed = 10;
+    public static float player_acceleration;//加速度
+    public static float player_limmit_speed;//最高速
+    public static float player_mass;//重さ
+    public static float player_power;//攻撃力
+    public static float player_friction;//摩擦
     public static Vector2 start_position = new Vector2(0, 0);
 }
 
-public class Player : MonoBehaviour {
+public class Player : Machine_Parameter {
 
-    private float speed;             //Floating point variable to store the player's movement speed.
-    private float limmit_speed;
     public Vector2 moveDirection = new Vector2(0,0);
     private Vector2 oldposition = new Vector2(0, 0);
 
@@ -46,8 +47,13 @@ public class Player : MonoBehaviour {
         //Scene内のスクリプト、GameManagerを取得
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        speed = PlayerPara.player_speed;
-        limmit_speed = PlayerPara.limmit_speed;
+        //マシン性能の設定
+        acceleration = PlayerPara.player_acceleration;
+        limmit_speed = PlayerPara.player_limmit_speed;
+        mass = PlayerPara.player_mass;
+        power = PlayerPara.player_power;
+        friction = PlayerPara.player_friction;
+        //ここで見た目(sprite)を変える
 
         //Androidで傾きを使う
         Input.gyro.enabled = true;
@@ -78,7 +84,7 @@ public class Player : MonoBehaviour {
         // ジャイロから重力の下向きのベクトルを取得。水平に置いた場合は、gravityV.zが-9.8になる.
         Vector3 gravityV = Input.gyro.gravity;
         // 外力のベクトルを計算.
-        Vector2 forceV = new Vector2(gravityV.x, gravityV.y) * speed;
+        Vector2 forceV = new Vector2(gravityV.x, gravityV.y) * acceleration;
 
         //Use the two store floats to create a new Vector2 variable movement.
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
@@ -86,8 +92,8 @@ public class Player : MonoBehaviour {
         if(Variable.playstate == Utility.PlayState.isPaly){
 
             //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
-            rb2d.AddForce(movement * 5 * speed);//インプットがなければこっちは0
-            rb2d.AddForce(forceV * speed);
+            rb2d.AddForce(movement * 5 * acceleration);//インプットがなければこっちは0
+            rb2d.AddForce(forceV * acceleration);
 
         }
 
@@ -120,12 +126,19 @@ public class Player : MonoBehaviour {
 
             //パワーアップ処理
             rb2d.mass *= 1000000;
-            speed *= 1000000;
+            acceleration *= 1000000;
             limmit_speed *= 1;
             PowewEffect.SetActive(true);
         }
 
 
     }
+
+    //プッシュ
+    public void Push()
+    {
+        rb2d.drag += friction * 0.01f;//摩擦を足していく
+    }
+
 
 }

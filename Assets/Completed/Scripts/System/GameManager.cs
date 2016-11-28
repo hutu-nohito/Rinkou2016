@@ -87,8 +87,18 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //入力管理
+        if (Input.GetKeyDown(KeyCode.Escape))//戻るボタン
+        {
+
+        }
+        if (Input.GetKeyDown(KeyCode.Menu))//メニューボタン
+        {
+
+        }
+
         //時間管理
-        if(Variable.playstate == Utility.PlayState.isPaly)
+        if (Variable.playstate == Utility.PlayState.isPaly)
         {
             Variable.time -= Time.deltaTime;
 
