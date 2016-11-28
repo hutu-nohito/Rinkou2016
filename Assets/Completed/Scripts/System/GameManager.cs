@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 //Adding this allows us to access members of the UI namespace including Text.
 using UnityEngine.UI;
 
@@ -48,8 +47,8 @@ public class GameManager : MonoBehaviour {
     /// タイム管理
     /// 入力管理
 
-    public float limitTime = 5;//タイムリミット
-    public int jewel_rate = 10;//宝石のスコア
+    [SerializeField]
+    private int jewel_rate = 10;//宝石のスコア
 
     //テキストオブジェクト
     public Text countText;          //Store a reference to the UI Text component which will display the number of pickups collected.
@@ -61,11 +60,18 @@ public class GameManager : MonoBehaviour {
     public GameObject TextBackGround;
     //戻る用のボタン(あとで何とかする)
     public GameObject LeftButton, RightButton;
+
+    private GameObject Player;
+    private GameObject Save;
+    private SceneTransition ST;
     
     // Use this for initialization
     void Start () {
 
-        GameObject.FindGameObjectWithTag("Player").transform.position = PlayerPara.start_position;
+        Save = GameObject.FindGameObjectWithTag("Save");
+        ST = Save.GetComponent<SceneTransition>();
+        Player = GameObject.FindGameObjectWithTag("Player");
+        Player.transform.position = PlayerPara.start_position;
 
         //テキストオブジェクトをセットする
         TextUtility.SetTextObject(countText, timeText, winText, loseText, gameoverText);
@@ -73,7 +79,7 @@ public class GameManager : MonoBehaviour {
         //Initialize count to zero.
         Variable.count = 0;
         TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
-        Variable.time = limitTime;
+        Variable.time = CommonValue.limit_time;
         TextUtility.SetText(TextUtility.TextName.time, "残り時間　" + ((int)Variable.time).ToString());
 
         //Initialze winText to a blank string since we haven't won yet at beginning.
@@ -112,12 +118,26 @@ public class GameManager : MonoBehaviour {
                 {
                     //ここでランダムでコロシアムを選ぶ
                     //コロシアムを管理するとこに送って場所を指定
-                    limitTime = 300;
-                    GameObject.FindGameObjectWithTag("Player").transform.position = new Vector2(0,0);
-                    Start();
-                    Variable.playstate = Utility.PlayState.Start;
+                    CommonValue.limit_time = 300;
+                    PlayerPara.start_position = new Vector2(0,0);
+                    Utility.isCity = false;
+
+                    //パラメタ受け渡し(あとで何とか)
+                    Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
+                    Player P = Player.GetComponent<Player>();
+                    MP.acceleration = P.acceleration;
+                    MP.limmit_speed = P.limmit_speed;
+                    MP.mass = P.mass;
+                    MP.power = P.power;
+                    MP.friction = P.friction;
+
+                    ST.SceneSet("Main");
                 }
-                Variable.playstate = Utility.PlayState.Failed;
+                else
+                {
+                    Variable.playstate = Utility.PlayState.Failed;
+                }
+                
             }
 
             TextUtility.SetText(TextUtility.TextName.time, ("残り時間　" + ((int)Variable.time).ToString()));//小数点以下を切り上げて表示
@@ -197,15 +217,19 @@ public class GameManager : MonoBehaviour {
     //戻す
     public void Reset()
     {
-        SceneManager.LoadScene("Home");
-        Variable.playstate = Utility.PlayState.Start;
+        Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
+        MP.acceleration = 5;
+        MP.limmit_speed = 25;
+        MP.mass = 1;
+        MP.power = 1;
+        MP.friction = 2;
+        ST.SceneSet("Home");
     }
 
     //リトライ
     public void Retry()
     {
-        SceneManager.LoadScene("Main");
-        Variable.playstate = Utility.PlayState.Start;
+        ST.SceneSet("Main");
     }
 
 }

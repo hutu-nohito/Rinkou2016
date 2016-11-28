@@ -40,7 +40,9 @@ public class Player : Machine_Parameter {
     public GameObject PowewEffect;
 
     private bool isDash = false;
-    
+
+    private GameObject Save;
+        
     // Use this for initialization
     void Start()
     {
@@ -49,14 +51,16 @@ public class Player : Machine_Parameter {
 
         //Scene内のスクリプト、GameManagerを取得
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        Save = GameObject.FindGameObjectWithTag("Save");
 
         //マシン性能の設定
-        acceleration = PlayerPara.player_acceleration;
-        limmit_speed = PlayerPara.player_limmit_speed;
-        mass = PlayerPara.player_mass;
-        power = PlayerPara.player_power;
-        friction = PlayerPara.player_friction;
-        dash = PlayerPara.player_dash;
+        Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
+        acceleration = MP.acceleration;
+        limmit_speed = MP.limmit_speed;
+        mass = MP.mass;
+        power = MP.power;
+        friction = MP.friction;
+        dash = MP.dash;
         //ここで見た目(sprite)を変える
 
         //Androidで傾きを使う

@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Machine_Parameter : MonoBehaviour {
 
-    public float acceleration;//加速度
-    public float limmit_speed;//最高速
-    public float mass;//重さ
-    public float power;//攻撃力
-    public float friction;//摩擦
+    public float acceleration = 5;//加速度
+    public float limmit_speed = 25;//最高速
+    public float mass = 1;//重さ
+    public float power = 1;//攻撃力
+    public float friction = 2;//摩擦
 
-    protected float dash;//プッシュ加速力
+
+    public float dash = 7;//プッシュ加速力
 
 }

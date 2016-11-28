@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 
 public class Title : MonoBehaviour {
 
+    SceneTransition ST;
+
 	// Use this for initialization
 	void Start () {
-	
+
+        ST = GameObject.FindGameObjectWithTag("Save").GetComponent<SceneTransition>();
 	}
 	
 	// Update is called once per frame
@@ -17,6 +19,6 @@ public class Title : MonoBehaviour {
 
     public void Button_Start()
     {
-        SceneManager.LoadScene("Home");
+        ST.SceneSet("Home");
     }
 }
