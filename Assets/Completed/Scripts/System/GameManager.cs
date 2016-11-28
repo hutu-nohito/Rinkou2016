@@ -20,7 +20,7 @@ using UnityEngine.UI;
 //ゲーム内でよく使う変数
 public static class Variable
 {
-    public static int count;              //Integer to store the number of pickups collected so far.
+    public static int count;
     public static float time;
     public static Utility.PlayState playstate = Utility.PlayState.Start;
 }
@@ -36,6 +36,8 @@ public class Utility
         Clear,//ゲームクリア
         Failed//ゲーム失敗
     }
+
+    public static bool isCity = true;//パワーアップパートかどうか
 
 }
 
@@ -105,6 +107,16 @@ public class GameManager : MonoBehaviour {
             if(Variable.time < 1)
             {
                 Variable.time = 0;
+
+                if (Utility.isCity)
+                {
+                    //ここでランダムでコロシアムを選ぶ
+                    //コロシアムを管理するとこに送って場所を指定
+                    limitTime = 300;
+                    GameObject.FindGameObjectWithTag("Player").transform.position = new Vector2(0,0);
+                    Start();
+                    Variable.playstate = Utility.PlayState.Start;
+                }
                 Variable.playstate = Utility.PlayState.Failed;
             }
 
@@ -149,13 +161,6 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = 1;//動かす
             TextUtility.SetText(TextUtility.TextName.lose, "");
         }
-        //TextUtility.SetText(TextUtility.TextName.lose, "スペースキーを押してね！");
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Variable.playstate = TextUtility.PlayState.isPaly;
-        //    Time.timeScale = 1;//動かす
-        //    TextUtility.SetText(TextUtility.TextName.lose, "");
-        //}
     }
 
     //クリア時の処理
