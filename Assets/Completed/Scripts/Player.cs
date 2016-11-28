@@ -19,12 +19,13 @@ using UnityEngine.UI;
 //マシン性能(選択できるようになったら使う)
 public static class PlayerPara
 {
-    public static float player_acceleration;//加速度
-    public static float player_limmit_speed;//最高速
-    public static float player_mass;//重さ
-    public static float player_power;//攻撃力
-    public static float player_friction;//摩擦
-    public static Vector2 start_position = new Vector2(0, 0);
+    public static float player_acceleration = 5;//加速度
+    public static float player_limmit_speed = 25;//最高速
+    public static float player_mass = 1;//重さ
+    public static float player_power = 1;//攻撃力
+    public static float player_friction = 2;//摩擦
+    public static float player_dash = 7;//プッシュ加速力
+    public static Vector2 start_position = new Vector2(0, 300);
 }
 
 public class Player : Machine_Parameter {
@@ -37,6 +38,8 @@ public class Player : Machine_Parameter {
     private GameManager gamemanager;//Gamemanagerを参照する
 
     public GameObject PowewEffect;
+
+    private bool isDash = false;
     
     // Use this for initialization
     void Start()
@@ -53,6 +56,7 @@ public class Player : Machine_Parameter {
         mass = PlayerPara.player_mass;
         power = PlayerPara.player_power;
         friction = PlayerPara.player_friction;
+        dash = PlayerPara.player_dash;
         //ここで見た目(sprite)を変える
 
         //Androidで傾きを使う
@@ -69,6 +73,17 @@ public class Player : Machine_Parameter {
         if(rb2d.velocity.magnitude > limmit_speed)
         {
             rb2d.AddForce(-rb2d.velocity * 0.7f);
+        }
+
+        //プッシュ
+        if (Input.GetMouseButton(0))
+        {
+            rb2d.drag += friction * 0.1f;//摩擦を足していく
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            rb2d.drag = 0;
+            isDash = true;
         }
     }
 
@@ -94,6 +109,13 @@ public class Player : Machine_Parameter {
             //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
             rb2d.AddForce(movement * 5 * acceleration);//インプットがなければこっちは0
             rb2d.AddForce(forceV * acceleration);
+
+            if (isDash)
+            {
+                rb2d.AddForce(movement * 5 * dash, ForceMode2D.Impulse);
+                rb2d.AddForce(forceV * dash,ForceMode2D.Impulse);
+                isDash = false;
+            }
 
         }
 
@@ -121,24 +143,18 @@ public class Player : Machine_Parameter {
 
         if (other.gameObject.CompareTag("PowerUP"))
         {
-            //... then set the other object we just collided with to inactive.
-            other.gameObject.SetActive(false);
-
             //パワーアップ処理
-            rb2d.mass *= 1000000;
-            acceleration *= 1000000;
-            limmit_speed *= 1;
-            PowewEffect.SetActive(true);
+            acceleration += 5 * other.gameObject.GetComponent<Machine_Parameter>().acceleration;
+            limmit_speed += 1 * other.gameObject.GetComponent<Machine_Parameter>().limmit_speed;
+            mass += 50 * other.gameObject.GetComponent<Machine_Parameter>().mass;
+            power += 1 * other.gameObject.GetComponent<Machine_Parameter>().power;
+            friction += 0.5f * other.gameObject.GetComponent<Machine_Parameter>().friction;
+            dash += (other.gameObject.GetComponent<Machine_Parameter>().acceleration + other.gameObject.GetComponent<Machine_Parameter>().limmit_speed) / 2;
+
+            Destroy(other.gameObject);
         }
 
 
     }
-
-    //プッシュ
-    public void Push()
-    {
-        rb2d.drag += friction * 0.01f;//摩擦を足していく
-    }
-
 
 }

@@ -55,11 +55,11 @@ public class GameManager : MonoBehaviour {
     public Text winText;            //Store a reference to the UI Text component which will display the 'You win' message.
     public Text loseText;
     public Text gameoverText;
-    //背景を暗くして文字を見やすくするためのもの
+    //背景を暗くして文字を見やすくするためのもの(後で何とか)
     public GameObject TextBackGround;
     //戻る用のボタン(あとで何とかする)
     public GameObject LeftButton, RightButton;
-
+    
     // Use this for initialization
     void Start () {
 
