@@ -18,6 +18,11 @@ public class SceneTransition : MonoBehaviour
     private bool flag_fade = false;
     [SerializeField]
     private float fade_time = 1;//フェードにかける時間
+    
+    public float Fade_time
+    {
+        get { return fade_time; }
+    }
 
     //時間を止めてても動くように(どこでも使えるようにしとくと便利かも)
     //http://unity-michi.com/post-411/

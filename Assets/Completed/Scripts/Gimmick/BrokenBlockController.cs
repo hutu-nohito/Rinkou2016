@@ -18,7 +18,7 @@ public class BrokenBlockController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-        if(carrentHP == 0)
+        if(carrentHP <= 0)
         {
             if (!isbroken)
             {
@@ -39,7 +39,8 @@ public class BrokenBlockController : MonoBehaviour {
         //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
         if (other.gameObject.CompareTag("Player"))
         {
-            carrentHP--;
+            //carrentHP--;
+            carrentHP -= (other.gameObject.GetComponent<Player>().power + (int)other.gameObject.GetComponent<Player>().mass/(50 * 2));
         }
     }
 }

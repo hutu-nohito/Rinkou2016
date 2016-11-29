@@ -32,6 +32,7 @@ public class Utility
     {
         Start,//ゲーム開始時
         isPaly,//ゲームプレイ中
+        isPause,//ポーズ中
         Clear,//ゲームクリア
         Failed//ゲーム失敗
     }
@@ -118,25 +119,7 @@ public class GameManager : MonoBehaviour {
 
                 if (Utility.isCity)
                 {
-                    //ここでランダムでコロシアムを選ぶ
-                    PlayerPara.start_position = new Vector2(500, 100);//ステージ2
-
-
-                    //コロシアムを管理するとこに送って場所を指定
-                    CommonValue.limit_time = 300;
-                    Utility.isCity = false;
-
-                    //パラメタ受け渡し(あとで何とか)
-                    Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
-                    Player P = Player.GetComponent<Player>();
-                    MP.acceleration = P.acceleration;
-                    MP.limmit_speed = P.limmit_speed;
-                    MP.mass = P.mass;
-                    MP.power = P.power;
-                    MP.friction = P.friction;
-
-                    Variable.time = 100;//失敗を表示させないため(あんまよくない)
-                    ST.SceneSet("Main");
+                    StartCoroutine(EndCity());
                 }
                 else
                 {
@@ -153,6 +136,9 @@ public class GameManager : MonoBehaviour {
         {
             case Utility.PlayState.Start:
                 StartState();
+                break;
+            case Utility.PlayState.isPause:
+                PauseState();
                 break;
             case Utility.PlayState.Clear:
                 ClearState();
@@ -177,6 +163,11 @@ public class GameManager : MonoBehaviour {
     //スタート時の処理
     void StartState()
     {
+
+        if (!Utility.isCity)
+        {
+            TextUtility.SetText(TextUtility.TextName.win, "ゴールを目指せ！");
+        }
         TextBackGround.SetActive(true);
         TextUtility.SetText(TextUtility.TextName.lose, "タップでスタート！");
         if (Input.GetMouseButtonDown(0))
@@ -185,14 +176,21 @@ public class GameManager : MonoBehaviour {
             Variable.playstate = Utility.PlayState.isPaly;
             Time.timeScale = 1;//動かす
             TextUtility.SetText(TextUtility.TextName.lose, "");
+            TextUtility.SetText(TextUtility.TextName.win, "");
         }
+    }
+
+    void PauseState()
+    {
+        //プレイヤーを止める
+        Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
     //クリア時の処理
     void ClearState()
     {
         //プレイヤーを止める
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 
         //リザルト表示
         TextBackGround.SetActive(true);
@@ -209,7 +207,7 @@ public class GameManager : MonoBehaviour {
     void FailedState()
     {
         //プレイヤーを止める
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         TextBackGround.SetActive(true);
         TextUtility.SetText(TextUtility.TextName.lose, "しっぱい・・・");
 
@@ -217,6 +215,43 @@ public class GameManager : MonoBehaviour {
         RightButton.SetActive(true);
         LeftButton.SetActive(true);
 
+    }
+
+    IEnumerator EndCity()
+    {
+        //暗くしてたら戻る
+        if (TextBackGround.activeInHierarchy) { yield break; }
+
+        Variable.playstate = Utility.PlayState.isPause;
+
+        TextBackGround.SetActive(true);
+        TextUtility.SetText(TextUtility.TextName.win, "timeup!");
+
+        //ここでランダムでコロシアムを選ぶ
+        int colosseumnum = Random.Range(2,5);
+        PlayerPara.start_position = new Vector2(0, colosseumnum * 100);
+
+        //コロシアムを管理するとこに送って場所を指定
+        CommonValue.limit_time = 300;
+
+        //パラメタ受け渡し(あとで何とか)
+        Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
+        Player P = Player.GetComponent<Player>();
+        MP.acceleration = P.acceleration;
+        MP.limmit_speed = P.limmit_speed;
+        MP.mass = P.mass;
+        MP.power = P.power;
+        MP.friction = P.friction;
+
+        yield return new WaitForSeconds(3);//タイムアップを見せる
+
+        ST.SceneSet("Main");
+
+        yield return new WaitForSeconds(ST.Fade_time);//とりあえずフェードタイムに合わせる
+
+        Variable.playstate = Utility.PlayState.isPaly;
+        Utility.isCity = false;
+        TextBackGround.SetActive(false);
     }
 
     //戻す
