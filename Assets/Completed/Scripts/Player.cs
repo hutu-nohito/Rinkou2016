@@ -145,22 +145,19 @@ public class Player : Machine_Parameter {
             //Update the currently displayed count by calling the SetCountText function.
             TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
             //gamemanager.SetCountText();
-            return;
         }
 
         if (other.gameObject.CompareTag("PowerUP"))
         {
-            SC.PowerUpSE();
             //パワーアップ処理
-            acceleration += 5 * other.gameObject.GetComponent<Machine_Parameter>().acceleration;
-            limmit_speed += 1 * other.gameObject.GetComponent<Machine_Parameter>().limmit_speed;
+            acceleration += 2 * other.gameObject.GetComponent<Machine_Parameter>().acceleration;
+            limmit_speed += 10 * other.gameObject.GetComponent<Machine_Parameter>().limmit_speed;
             mass += 50 * other.gameObject.GetComponent<Machine_Parameter>().mass;
             power += 1 * other.gameObject.GetComponent<Machine_Parameter>().power;
-            friction += 0.5f * other.gameObject.GetComponent<Machine_Parameter>().friction;
+            friction += 5 * other.gameObject.GetComponent<Machine_Parameter>().friction;
             dash += (other.gameObject.GetComponent<Machine_Parameter>().acceleration + other.gameObject.GetComponent<Machine_Parameter>().limmit_speed) / 2;
-
+            StartCoroutine(PowerUP());
             Destroy(other.gameObject);
-            return;
         }
 
     }
@@ -168,6 +165,22 @@ public class Player : Machine_Parameter {
     void OnCollisionEnter2D()
     {
         SC.KabeSE();
+    }
+
+    IEnumerator PowerUP()
+    {
+
+        SC.PowerUpSE();
+
+        //エフェクトがついてたらやらない
+        if (PowewEffect.activeInHierarchy) { yield break; }
+
+        PowewEffect.SetActive(true);
+        
+        yield return new WaitForSeconds(1);
+
+        PowewEffect.SetActive(false);
+
     }
 
 }
