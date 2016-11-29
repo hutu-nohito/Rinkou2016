@@ -163,7 +163,10 @@ public class GameManager : MonoBehaviour {
     //スタート時の処理
     void StartState()
     {
-
+        if (Utility.isCity)
+        {
+            TextUtility.SetText(TextUtility.TextName.win, "シティでUFOを強化せよ！");
+        }
         if (!Utility.isCity)
         {
             TextUtility.SetText(TextUtility.TextName.win, "ゴールを目指せ！");
