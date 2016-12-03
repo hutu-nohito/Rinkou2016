@@ -40,9 +40,17 @@ public class Player : Machine_Parameter {
     public GameObject PowewEffect;
 
     private bool isDash = false;
+    private bool isDashCoroutine = false;
+    private float dash_time = 0;
+    private float dash_needtime = 0.8f;
 
     private GameObject Save;
     private Sound_Controller SC;
+
+    [SerializeField]
+    private AudioClip[] SEs;
+
+    private AudioSource[] audio_source;
         
     // Use this for initialization
     void Start()
@@ -54,6 +62,7 @@ public class Player : Machine_Parameter {
         gamemanager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Save = GameObject.FindGameObjectWithTag("Save");
         SC = Save.GetComponent<Sound_Controller>();
+        audio_source = GetComponents<AudioSource>();
 
         //マシン性能の設定
         Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
@@ -65,6 +74,9 @@ public class Player : Machine_Parameter {
         dash = MP.dash;
         //ここで見た目(sprite)を変える
 
+        //SE
+        audio_source[1].Pause();
+
         //Androidで傾きを使う
         Input.gyro.enabled = true;
 
@@ -73,7 +85,7 @@ public class Player : Machine_Parameter {
     void Update()
     {
         //回してるとＵＦＯっぽい
-        transform.Rotate(0,0,10);
+        transform.Rotate(0,0,20);
 
         //速度制限
         if(rb2d.velocity.magnitude > limmit_speed)
@@ -84,12 +96,43 @@ public class Player : Machine_Parameter {
         //プッシュ
         if (Input.GetMouseButton(0))
         {
-            rb2d.drag += friction * 0.1f;//摩擦を足していく
+            if (rb2d.drag < 20)
+            {
+                rb2d.drag += friction * 0.1f;//摩擦を足していく
+            }
+
+            if (!audio_source[1].isPlaying)
+            {
+                audio_source[1].UnPause();
+            }
+
+            audio_source[1].pitch = -rb2d.drag / 10;
+
+            //ボタンを何秒か押してないとダッシュは発動しない
+            dash_time += Time.deltaTime;
+            GetComponent<SpriteRenderer>().color = new Color(1, GetComponent<SpriteRenderer>().color.g - 0.01f, GetComponent<SpriteRenderer>().color.b - 0.01f, 1);//チャージ演出
+            if (dash_time > dash_needtime)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(1, 0.5f, 0.5f, 1);
+            }
+
         }
         if (Input.GetMouseButtonUp(0))
         {
             rb2d.drag = 0;
-            isDash = true;
+
+            //SE
+            audio_source[1].Pause();
+            audio_source[1].pitch = 0;
+            audio_source[2].PlayOneShot(SEs[0]);
+
+            if (dash_time > dash_needtime)
+            {
+                isDash = true;
+                GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            }
+
+            dash_time = 0;
         }
     }
 
@@ -121,6 +164,8 @@ public class Player : Machine_Parameter {
                 rb2d.AddForce(movement * 5 * dash, ForceMode2D.Impulse);
                 rb2d.AddForce(forceV * dash,ForceMode2D.Impulse);
                 isDash = false;
+                dash = 0;
+                StartCoroutine(DashReset());
             }
 
         }
@@ -183,4 +228,16 @@ public class Player : Machine_Parameter {
 
     }
 
+    IEnumerator DashReset()
+    {
+        if (isDashCoroutine) { yield break; }
+        isDashCoroutine = true;
+
+        yield return new WaitForSeconds(dash_needtime);
+
+        dash = 7;//整数に
+
+        isDashCoroutine = false;
+
+    }
 }
