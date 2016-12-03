@@ -47,10 +47,15 @@ public class Player : Machine_Parameter {
     private GameObject Save;
     private Sound_Controller SC;
 
+    //SE
     [SerializeField]
     private AudioClip[] SEs;
-
     private AudioSource[] audio_source;
+
+    //Effect
+    [SerializeField]
+    private Canvas Canvas_E;
+    private Text text_e;
         
     // Use this for initialization
     void Start()
@@ -63,6 +68,9 @@ public class Player : Machine_Parameter {
         Save = GameObject.FindGameObjectWithTag("Save");
         SC = Save.GetComponent<Sound_Controller>();
         audio_source = GetComponents<AudioSource>();
+
+        text_e = Canvas_E.GetComponentInChildren<Text>();
+        text_e.text = "";//消しとく
 
         //マシン性能の設定
         Machine_Parameter MP = Save.GetComponent<Machine_Parameter>();
@@ -202,6 +210,23 @@ public class Player : Machine_Parameter {
             power += 1 * other.gameObject.GetComponent<Machine_Parameter>().power;
             friction += 5 * other.gameObject.GetComponent<Machine_Parameter>().friction;
             dash += (other.gameObject.GetComponent<Machine_Parameter>().acceleration + other.gameObject.GetComponent<Machine_Parameter>().limmit_speed) / 2;
+
+            //エフェクト(あとで何とか)
+            if(other.gameObject.GetComponent<Machine_Parameter>().acceleration > 0)
+            {
+                text_e.text = "カソク";//
+                text_e.color = new Color(0, 1, 0, 0.8f);
+            }
+            if (other.gameObject.GetComponent<Machine_Parameter>().limmit_speed > 0)
+            {
+                text_e.text = "ハヤサ";//消しとく
+                text_e.color = new Color(0, 0, 1, 0.8f);
+            }
+            if (other.gameObject.GetComponent<Machine_Parameter>().power> 0)
+            {
+                text_e.text = "パワー";//消しとく
+                text_e.color = new Color(1, 0, 0, 0.8f);
+            }
             StartCoroutine(PowerUP());
             Destroy(other.gameObject);
         }
@@ -226,6 +251,8 @@ public class Player : Machine_Parameter {
         yield return new WaitForSeconds(1);
 
         PowewEffect.SetActive(false);
+        text_e.text = "";//消しとく
+        text_e.color = new Color(1, 1, 1, 0.8f);
 
     }
 
