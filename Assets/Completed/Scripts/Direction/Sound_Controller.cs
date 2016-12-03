@@ -58,4 +58,19 @@ public class Sound_Controller : MonoBehaviour {
     {
         audiosource[1].PlayOneShot(Clips[2]);
     }
+
+    public void TimeUpSE()
+    {
+        audiosource[1].PlayOneShot(Clips[3]);
+    }
+
+    public void ResultSE()
+    {
+        audiosource[1].PlayOneShot(Clips[4]);
+    }
+
+    public void FaildSE()
+    {
+        audiosource[1].PlayOneShot(Clips[5]);
+    }
 }

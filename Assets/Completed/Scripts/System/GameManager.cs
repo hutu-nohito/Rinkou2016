@@ -49,7 +49,9 @@ public class GameManager : MonoBehaviour {
     /// 入力管理
 
     [SerializeField]
-    private int jewel_rate = 10;//宝石のスコア
+    private int jewel_rate = 5;//宝石のスコア
+    [SerializeField]
+    private int time_rate = 2;//タイムのスコア
 
     //テキストオブジェクト
     public Text countText;          //Store a reference to the UI Text component which will display the number of pickups collected.
@@ -195,12 +197,15 @@ public class GameManager : MonoBehaviour {
     //クリア時の処理
     void ClearState()
     {
+        if (TextBackGround.activeInHierarchy) { return; }
+
         //プレイヤーを止める
         Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 
         //リザルト表示
         TextBackGround.SetActive(true);
-        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time);
+        SC.ResultSE();
+        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time * time_rate);
         TextUtility.SetText(TextUtility.TextName.win, result_text);
 
         //ボタン表示
@@ -212,9 +217,12 @@ public class GameManager : MonoBehaviour {
     //失敗時の処理
     void FailedState()
     {
+        if (TextBackGround.activeInHierarchy) { return; }
+
         //プレイヤーを止める
         Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         TextBackGround.SetActive(true);
+        SC.FaildSE();
         TextUtility.SetText(TextUtility.TextName.lose, "しっぱい・・・");
 
         //ボタン表示
@@ -232,6 +240,7 @@ public class GameManager : MonoBehaviour {
 
         TextBackGround.SetActive(true);
         TextUtility.SetText(TextUtility.TextName.win, "timeup!");
+        SC.TimeUpSE();
 
         //ここでランダムでコロシアムを選ぶ
         int colosseumnum = Random.Range(2,11);

@@ -8,6 +8,7 @@ public class BrokenBlockController : MonoBehaviour {
     private bool isbroken = false;
 
     public GameObject[] brokenPiece;//壊れた時に飛ぶ破片
+    Vector2 OldPos;
 
     //SE
     AudioSource audio_source;
@@ -20,7 +21,8 @@ public class BrokenBlockController : MonoBehaviour {
 
         audio_source = GetComponent<AudioSource>();
         carrentHP = maxHP;
-	}
+        OldPos = transform.parent.transform.position;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,8 +60,6 @@ public class BrokenBlockController : MonoBehaviour {
     //プルプルさせる
     IEnumerator Crumble()
     {
-        Vector2 OldPos = transform.parent.transform.position;
-
         for (int i = 0;i < 10; i++)
         {
             transform.parent.transform.position += new Vector3(Random.Range(-0.3f,0.3f), Random.Range(-0.3f, 0.3f),0);
@@ -70,6 +70,8 @@ public class BrokenBlockController : MonoBehaviour {
 
             yield return new WaitForSeconds(0.02f);
         }
+
+        transform.parent.transform.position = OldPos;
 
     }
 }
