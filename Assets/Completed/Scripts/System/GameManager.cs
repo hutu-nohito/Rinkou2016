@@ -81,7 +81,10 @@ public class GameManager : MonoBehaviour {
 
         //Initialize count to zero.
         Variable.count = 0;
-        TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+        if (!Utility.isCity)
+        {
+            TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+        }
         Variable.time = CommonValue.limit_time;
         TextUtility.SetText(TextUtility.TextName.time, "残り時間　" + ((int)Variable.time).ToString());
 
