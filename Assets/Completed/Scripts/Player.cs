@@ -129,8 +129,9 @@ public class Player : Machine_Parameter {
             if (dash_time > dash_needtime)
             {
                 isDash = true;
-                GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
             }
+
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
             dash_time = 0;
         }
