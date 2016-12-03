@@ -234,7 +234,20 @@ public class GameManager : MonoBehaviour {
         TextUtility.SetText(TextUtility.TextName.win, "timeup!");
 
         //ここでランダムでコロシアムを選ぶ
-        int colosseumnum = Random.Range(2,5);
+        int colosseumnum = Random.Range(2,11);
+        switch (colosseumnum)
+        {
+            case 6:
+            case 7:
+                colosseumnum = 5;
+                break;
+            case 9:
+            case 10:
+                colosseumnum = 8;
+                break;
+            default:
+                break;
+        }
         PlayerPara.start_position = new Vector2(0, colosseumnum * 100);
 
         //コロシアムを管理するとこに送って場所を指定

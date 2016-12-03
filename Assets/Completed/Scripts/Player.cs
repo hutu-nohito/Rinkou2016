@@ -190,6 +190,7 @@ public class Player : Machine_Parameter {
         //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
         if (other.gameObject.CompareTag("PickUp"))
         {
+            SC.PowerUpSE();
             //... then set the other object we just collided with to inactive.
             other.gameObject.SetActive(false);
 
