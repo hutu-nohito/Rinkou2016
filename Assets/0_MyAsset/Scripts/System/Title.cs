@@ -24,4 +24,19 @@ public class Title : MonoBehaviour {
         SC.ButtonSE();
         ST.SceneSet("Home");
     }
+
+    public void Button_Language()
+    {
+        if(ConfigPara.language == ConfigPara.Language.Japanese)
+        {
+            ConfigPara.language = ConfigPara.Language.English;
+        }
+        else
+        {
+            ConfigPara.language = ConfigPara.Language.Japanese;
+        }
+
+        ST.SceneSet("Title");
+        
+    }
 }

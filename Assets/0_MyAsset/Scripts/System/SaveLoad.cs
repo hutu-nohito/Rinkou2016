@@ -10,7 +10,7 @@ using System.Collections;
 */
 /******************************************************************************/
 /* 更新履歴
-*
+*   設定はこれに保持
 */
 /******************************************************************************/
 
@@ -18,6 +18,13 @@ using System.Collections;
 public static class ConfigPara
 {
     public static int BGM_vol = 1;
+    public enum Language
+    {
+        Japanese,
+        English
+    }
+    public static Language language = Language.English;
+
 }
 
 public class SaveLoad : MonoBehaviour {
