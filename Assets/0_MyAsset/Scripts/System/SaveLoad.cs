@@ -49,6 +49,15 @@ public class SaveLoad : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        string deviceLanguage = Application.systemLanguage.ToString();
+        if (deviceLanguage == "Japanese")
+        {
+            ConfigPara.language = ConfigPara.Language.Japanese;
+        }
+        else
+        {
+            ConfigPara.language = ConfigPara.Language.English;
+        }
     }
 	
 	// Update is called once per frame
