@@ -198,7 +198,14 @@ public class Player : Machine_Parameter {
             Variable.count = Variable.count + 1;
 
             //Update the currently displayed count by calling the SetCountText function.
-            TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+            if (ConfigPara.language != ConfigPara.Language.Japanese)
+            {
+                TextUtility.SetText(TextUtility.TextName.count, "Jewelry　" + Variable.count.ToString());
+            }
+            else
+            {
+                TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+            }
             //gamemanager.SetCountText();
         }
 
@@ -215,17 +222,38 @@ public class Player : Machine_Parameter {
             //エフェクト(あとで何とか)
             if(other.gameObject.GetComponent<Machine_Parameter>().acceleration > 0)
             {
-                text_e.text = "カソク";//
+                if (ConfigPara.language != ConfigPara.Language.Japanese)
+                {
+                    text_e.text = "AGL";//
+                }
+                else
+                {
+                    text_e.text = "カソク";//
+                }
                 text_e.color = new Color(0, 1, 0, 0.8f);
             }
             if (other.gameObject.GetComponent<Machine_Parameter>().limmit_speed > 0)
             {
-                text_e.text = "ハヤサ";//消しとく
+                if (ConfigPara.language != ConfigPara.Language.Japanese)
+                {
+                    text_e.text = "SPD";//
+                }
+                else
+                {
+                    text_e.text = "ハヤサ";//消しとく
+                }
                 text_e.color = new Color(0, 0, 1, 0.8f);
             }
             if (other.gameObject.GetComponent<Machine_Parameter>().power> 0)
             {
-                text_e.text = "パワー";//消しとく
+                if (ConfigPara.language != ConfigPara.Language.Japanese)
+                {
+                    text_e.text = "POW";//
+                }
+                else
+                {
+                    text_e.text = "パワー";//消しとく
+                }
                 text_e.color = new Color(1, 0, 0, 0.8f);
             }
             StartCoroutine(PowerUP());

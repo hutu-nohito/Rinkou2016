@@ -85,10 +85,25 @@ public class GameManager : MonoBehaviour {
         Variable.count = 0;
         if (!Utility.isCity)
         {
-            TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+            if (ConfigPara.language != ConfigPara.Language.Japanese)
+            {
+                TextUtility.SetText(TextUtility.TextName.count, "Jewelry　" + Variable.count.ToString());
+            }
+            else
+            {
+                TextUtility.SetText(TextUtility.TextName.count, "宝石　" + Variable.count.ToString());
+            }
+                
         }
         Variable.time = CommonValue.limit_time;
-        TextUtility.SetText(TextUtility.TextName.time, "残り時間　" + ((int)Variable.time).ToString());
+        if (ConfigPara.language != ConfigPara.Language.Japanese)
+        {
+            TextUtility.SetText(TextUtility.TextName.time, "Time　" + ((int)Variable.time).ToString());
+        }
+        else
+        {
+            TextUtility.SetText(TextUtility.TextName.time, "残り時間　" + ((int)Variable.time).ToString());
+        }
 
         //Initialze winText to a blank string since we haven't won yet at beginning.
         TextUtility.SetText(TextUtility.TextName.win, "");
@@ -133,7 +148,14 @@ public class GameManager : MonoBehaviour {
 
             }
 
-            TextUtility.SetText(TextUtility.TextName.time, ("残り時間　" + ((int)Variable.time).ToString()));//小数点以下を切り上げて表示
+            if (ConfigPara.language != ConfigPara.Language.Japanese)
+            {
+                TextUtility.SetText(TextUtility.TextName.time, "Time　" + ((int)Variable.time).ToString());
+            }
+            else
+            {
+                TextUtility.SetText(TextUtility.TextName.time, "残り時間　" + ((int)Variable.time).ToString());
+            }
         }
 
         //状態管理
@@ -170,14 +192,35 @@ public class GameManager : MonoBehaviour {
     {
         if (Utility.isCity)
         {
-            TextUtility.SetText(TextUtility.TextName.win, "シティでUFOを強化せよ！");
+            if (ConfigPara.language != ConfigPara.Language.Japanese)
+            {
+                TextUtility.SetText(TextUtility.TextName.win, "Collect jewelry!");
+            }
+            else
+            {
+                TextUtility.SetText(TextUtility.TextName.win, "シティでUFOを強化せよ！");
+            }
         }
         if (!Utility.isCity)
         {
-            TextUtility.SetText(TextUtility.TextName.win, "ゴールを目指せ！");
+            if (ConfigPara.language != ConfigPara.Language.Japanese)
+            {
+                TextUtility.SetText(TextUtility.TextName.win, "Run toward the finish line!");
+            }
+            else
+            {
+                TextUtility.SetText(TextUtility.TextName.win, "ゴールを目指せ！");
+            }
         }
         TextBackGround.SetActive(true);
-        TextUtility.SetText(TextUtility.TextName.lose, "タップでスタート！");
+        if (ConfigPara.language != ConfigPara.Language.Japanese)
+        {
+            TextUtility.SetText(TextUtility.TextName.win, "TAP START!");
+        }
+        else
+        {
+            TextUtility.SetText(TextUtility.TextName.lose, "タップでスタート！");
+        }
         if (Input.GetMouseButtonDown(0))
         {
             TextBackGround.SetActive(false);
@@ -205,7 +248,15 @@ public class GameManager : MonoBehaviour {
         //リザルト表示
         TextBackGround.SetActive(true);
         SC.ResultSE();
-        string result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time * time_rate);
+        string result_text;
+        if (ConfigPara.language != ConfigPara.Language.Japanese)
+        {
+            result_text = "Clear!\n" + "Score " + (int)(Variable.count * jewel_rate + Variable.time * time_rate);
+        }
+        else
+        {
+            result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time * time_rate);
+        }
         TextUtility.SetText(TextUtility.TextName.win, result_text);
 
         //ボタン表示
@@ -223,7 +274,14 @@ public class GameManager : MonoBehaviour {
         Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         TextBackGround.SetActive(true);
         SC.FaildSE();
-        TextUtility.SetText(TextUtility.TextName.lose, "しっぱい・・・");
+        if (ConfigPara.language != ConfigPara.Language.Japanese)
+        {
+            TextUtility.SetText(TextUtility.TextName.lose, "Failed");
+        }
+        else
+        {
+            TextUtility.SetText(TextUtility.TextName.lose, "しっぱい・・・");
+        }
 
         //ボタン表示
         RightButton.SetActive(true);
