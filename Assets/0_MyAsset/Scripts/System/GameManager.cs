@@ -21,6 +21,7 @@ public static class Variable
 {
     public static int count;
     public static float time;
+    public static int Score;//絶対ここじゃないと思う
     public static Utility.PlayState playstate = Utility.PlayState.Start;
 }
 
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour {
     private GameObject Player;
     private GameObject Save;
     private SceneTransition ST;
+    private SaveLoad SL;
     Sound_Controller SC;
 
     // Use this for initialization
@@ -74,6 +76,7 @@ public class GameManager : MonoBehaviour {
 
         Save = GameObject.FindGameObjectWithTag("Save");
         ST = Save.GetComponent<SceneTransition>();
+        SL = Save.GetComponent<SaveLoad>();
         SC = GameObject.FindGameObjectWithTag("Save").GetComponent<Sound_Controller>();
         Player = GameObject.FindGameObjectWithTag("Player");
         Player.transform.position = PlayerPara.start_position;
@@ -255,7 +258,14 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            
             result_text = "クリア!\n" + "スコア " + (int)(Variable.count * jewel_rate + Variable.time * time_rate);
+            if ((int)(Variable.count * jewel_rate + Variable.time * time_rate) > Variable.Score)
+            {
+                Variable.Score = (int)(Variable.count * jewel_rate + Variable.time * time_rate);
+                SL.Save();
+
+            }
         }
         TextUtility.SetText(TextUtility.TextName.win, result_text);
 

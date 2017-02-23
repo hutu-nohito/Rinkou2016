@@ -8,6 +8,7 @@ public class SceneTransition : MonoBehaviour
     private FadeImage Fade_Image;
 
     Sound_Controller SC;
+    SaveLoad SL;
 
     private string SceneName = "Home";
     private bool isCoroutine;
@@ -43,6 +44,7 @@ public class SceneTransition : MonoBehaviour
     void Start()
     {
         SC = GetComponent<Sound_Controller>();
+        SL = GetComponent<SaveLoad>();
     }
 
     void Update()
